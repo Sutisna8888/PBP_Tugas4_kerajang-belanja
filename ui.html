@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Keranjang Belanja</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .product-list,
+      .cart-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .product-list li,
+      .cart-list li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+      .product-list li:last-child,
+      .cart-list li:last-child {
+        border-bottom: none;
+      }
+      .add-to-cart {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .add-to-cart:hover {
+        background-color: #3e8e41;
+      }
+      .cart {
+        margin-top: 20px;
+        display: none;
+      }
+      .cart-icon {
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Daftar Produk</h1>
+    <ul class="product-list" id="product-list"></ul>
+
+    <div>
+      <h2>
+        Keranjang Belanja
+        <img
+          src="keranjang.png"
+          alt="Keranjang"
+          class="cart-icon"
+          id="cart-icon"
+        />
+      </h2>
+      <div class="cart" id="cart">
+        <ul class="cart-list" id="cart-list"></ul>
+      </div>
+    </div>
+
+    <script src="chart.js"></script>
+  </body>
+</html>
