@@ -1,7 +1,7 @@
 const products = [
-  { name: "Samsung s24 ", price: 13000000 },
-  { name: "Foco F6 ", price: 5000000 },
-  { name: "Black Shark 5 Pro", price: 10000000 },
+  { name: "Samsung S24 Ultra", harga: 29000000, image: "samsung.png" },
+  { name: "Black Shark 5", harga: 10000000, image: "Black Shark 5.png" },
+  { name: "Foco F6", harga: 5000000, image: "poco f6.png" },
 ];
 
 let cart = [];
@@ -13,8 +13,12 @@ function displayProductList() {
   products.forEach((product, index) => {
     const li = document.createElement("li");
     li.innerHTML = `
-           ${product.name} - Rp ${product.price}
-           <button class="add-to-cart" data-index="${index}">Tambah ke Keranjang</button>
+           <div>
+               <img src="${product.image}" alt="${product.name}" style="width: 100%; height: auto; border-radius: 5px;">
+               <div>${product.name}</div>
+               <div>Rp ${product.harga}</div>
+               <button class="add-to-cart" data-index="${index}">Tambah ke Keranjang</button>
+           </div>
        `;
     productList.appendChild(li);
   });
@@ -34,15 +38,54 @@ function addToCart(event) {
   displayCart();
 }
 
+function increaseQuantity(index) {
+  cart[index].quantity += 1;
+  displayCart();
+}
+
+function decreaseQuantity(index) {
+  if (cart[index].quantity > 1) {
+    cart[index].quantity -= 1;
+  } else {
+    cart.splice(index, 1);
+  }
+  displayCart();
+}
+
 function displayCart() {
   const cartList = document.getElementById("cart-list");
   cartList.innerHTML = "";
 
-  cart.forEach((product) => {
+  cart.forEach((product, index) => {
+    const totalharga = product.harga * product.quantity;
     const li = document.createElement("li");
-    const totalPrice = product.price * product.quantity;
-    li.innerHTML = `${product.name} - ${product.quantity} pcs - Rp ${totalPrice}`;
+
+    li.innerHTML = `
+           <div class="product-info">
+               ${product.name} - ${product.quantity} pcs - Rp ${totalharga}
+           </div>
+           <div>
+               <button class="decrease-quantity" data-index="${index}">-</button>
+               <button class="increase-quantity" data-index="${index}">+</button>
+           </div>
+       `;
     cartList.appendChild(li);
+  });
+
+  const increaseButtons = document.querySelectorAll(".increase-quantity");
+  increaseButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const index = button.getAttribute("data-index");
+      increaseQuantity(index);
+    });
+  });
+
+  const decreaseButtons = document.querySelectorAll(".decrease-quantity");
+  decreaseButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const index = button.getAttribute("data-index");
+      decreaseQuantity(index);
+    });
   });
 }
 
@@ -54,10 +97,13 @@ function toggleCart() {
 document.addEventListener("DOMContentLoaded", () => {
   displayProductList();
 
-  const addToCartButtons = document.querySelectorAll(".add-to-cart");
-  addToCartButtons.forEach((button) => {
-    button.addEventListener("click", addToCart);
-  });
+  document
+    .getElementById("product-list")
+    .addEventListener("click", function (e) {
+      if (e.target.classList.contains("add-to-cart")) {
+        addToCart(e);
+      }
+    });
 
   const cartIcon = document.getElementById("cart-icon");
   cartIcon.addEventListener("click", toggleCart);
